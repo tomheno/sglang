@@ -42,3 +42,10 @@ update: ## Update version numbers across project files. Usage: make update <new_
 
 %:
 	@:
+
+
+TIMESTAMP := $(shell date +%Y%m%d%H%M%S)
+COMMIT_HASH := $(shell git rev-parse --short HEAD)
+
+build_push_using_depot:
+	cd docker && depot build --push --platform linux/amd64 --build-arg "CUDA_VERSION=12.4.1" --build-arg "BUILD_TYPE=all" --progress=plain -t "rg.fr-par.scw.cloud/k8s-ai-registry/sglang:fixed-mig-latest" -t "rg.fr-par.scw.cloud/k8s-ai-registry/sglang:fixed-mig-$(COMMIT_HASH)-$(TIMESTAMP)" .
